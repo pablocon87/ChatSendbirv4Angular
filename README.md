@@ -1,6 +1,6 @@
 # Chatsbv4
 ## Ejemplo SendBirdChat V4 con Angular 14
-SendBirdChat V4 con [Angular 14](https://stackblitz.com/edit/angular-ivy-2peatk?file=src/app/service/chatservice.service.ts](https://stackblitz.com/edit/angular-ivy-2peatk?file=src/app/app.component.ts). version 14.
+SendBirdChat V4 con [Angular_14](https://stackblitz.com/edit/angular-ivy-2peatk?file=src/app/service/chatservice.service.ts](https://stackblitz.com/edit/angular-ivy-2peatk?file=src/app/app.component.ts). version 14.
 ## Guia Basica
 ## Configuracion basica de SendBirChat V4 con Angular 15.
 ## Paso 1
