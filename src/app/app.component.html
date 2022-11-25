@@ -1,0 +1,27 @@
+<div class="row" style="border-radius: 2px;" *ngIf="!this.chat.isConnected()">
+    <div class="col-sm-3"></div>
+    <div class="card h-100 col-sm-6" id="login" >
+      <div class="card-body text-center"  >
+      <br>
+  <form [formGroup]="form"  id="login-form" method="post" class="form-signin" role="form" (ngSubmit)="onConnect($event)">
+    <div class="input-group mb-3"  >
+      <span class="input-group-text" id="inputGroup-sizing-default"><fa-icon [icon]="faUser"></fa-icon></span>
+      <input formControlName="User"  name="User" id="User" type="text" class="form-control" placeholder="UserId" autofocus required> 
+      </div>
+      <div class="input-group mb-3"  >
+        <span class="input-group-text" id="inputGroup-sizing-default"><fa-icon [icon]="faUnlock"></fa-icon></span>
+      <input formControlName="nick"  name="nick" id="nick" type="text" class="form-control" placeholder="Nickname"> 
+      <button class="btn btn-success" style="width: 100%;" type="submit" id="submit_btn" data-loading-text="Iniciando...."><fa-icon [icon]="faPaperPlane"></fa-icon>Conectar</button>
+      
+        </div>
+  </form>
+ 
+  </div>
+  </div>
+  <div class="col-sm-3"></div>
+  </div>
+  <div class="container" *ngIf="this.chat.isConnected();">
+    
+    <router-outlet></router-outlet> 
+    </div>
+    
