@@ -1,4 +1,6 @@
 # Chatsbv4
+## Ejemplo SendBirdChat V4 con Angular 14
+SendBirdChat V4 con [Angular 14](https://stackblitz.com/edit/angular-ivy-2peatk?file=src/app/service/chatservice.service.ts](https://stackblitz.com/edit/angular-ivy-2peatk?file=src/app/app.component.ts) version 14
 ## Guia Basica
 ## Configuracion basica de SendBirChat V4 con Angular 15.
 ## Paso 1
@@ -6,13 +8,22 @@
 ## Paso 2
 2-Crear la aplicacion en la url mencionada una ves registrados, les va a dar una ID de la Aplicacion que es la que necesitan para Conectarse.
 ## Paso 3
-3-
-Modulos a Instalar:
+3-Modulos a Instalar:
+##
 npm install --save @sendbird/chat
+##
 npm i @react-native-async-storage/async-storage
+##
 npm i sweetalert2
+##
 npm i @fortawesome/angular-fontawesome
+##
 npm i @fortawesome/free-solid-svg-icons
+##
+npm i bootstrap
+##
+npm i @popperjs/core
+
 ## Paso 4
 4- El project es totalmente publico y sin fines de lucro, solo con fines educativos.
 ##
