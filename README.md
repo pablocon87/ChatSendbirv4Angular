@@ -1,3 +1,20 @@
+#Guia Basica
+#Configuracion basica de SendBirChat V4 con Angular 15.
+1-Para esto deben Tener una cuenta en Senbird: https://sendbird.com/ (Si no la tienen se pueden Registrar).
+2-Crear la aplicacion en la url mencionada una ves registrados, les va a dar una ID de la Aplicacion que es la que necesitan para Conectarse.
+3-
+Modulos a Instalar:
+npm install --save @sendbird/chat
+npm i @react-native-async-storage/async-storage
+npm i sweetalert2
+npm i @fortawesome/angular-fontawesome
+npm i @fortawesome/free-solid-svg-icons
+
+4- El project es totalmente publico y sin fines de lucro, solo con fines educativos.
+Saludos Cordiales.
+Pablo V C
+
+
 # Chatsbv4
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 15.0.0.
