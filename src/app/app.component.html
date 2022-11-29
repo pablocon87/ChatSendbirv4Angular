@@ -1,4 +1,4 @@
-<div class="row" style="border-radius: 2px;" *ngIf="!this.chat.isConnected()">
+<div class="row" style="border-radius: 2px;" *ngIf="!this.chat.isConnected() && call===false">
     <div class="col-sm-3"></div>
     <div class="card h-100 col-sm-6" id="login" >
       <div class="card-body text-center"  >
@@ -9,10 +9,10 @@
       <input formControlName="User"  name="User" id="User" type="text" class="form-control" placeholder="UserId" autofocus required> 
       </div>
       <div class="input-group mb-3"  >
-        <span class="input-group-text" id="inputGroup-sizing-default"><fa-icon [icon]="faUnlock"></fa-icon></span>
+        <span class="input-group-text" id="inputGroup-sizing-default"><fa-icon [icon]="faUserCheck"></fa-icon></span>
       <input formControlName="nick"  name="nick" id="nick" type="text" class="form-control" placeholder="Nickname"> 
       <button class="btn btn-success" style="width: 100%;" type="submit" id="submit_btn" data-loading-text="Iniciando...."><fa-icon [icon]="faPaperPlane"></fa-icon>Conectar</button>
-      
+      <a class="btn" [routerLink]="['Callconn']" (click)="irCall()">Ir A Call</a>
         </div>
   </form>
  
@@ -20,7 +20,7 @@
   </div>
   <div class="col-sm-3"></div>
   </div>
-  <div class="container" *ngIf="this.chat.isConnected();">
+  <div class="container" *ngIf="this.chat.isConnected() || call===true">
     
     <router-outlet></router-outlet> 
     </div>

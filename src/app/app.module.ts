@@ -6,12 +6,14 @@ import { GroupChannelModule} from '@sendbird/chat/groupChannel';
 import { ConnectedComponent } from './component/connected/connected.component';
 import {RouterModule, Routes} from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { CallComponent } from './component/call/call.component';
 const appRoutes:Routes =[
  
   // {path:'Inic', component: IniciarSesionComponent},
  
   {path:'Connected', component: ConnectedComponent},
   {path:'Con', component: AppComponent},
+  {path:'Callconn', component: CallComponent},
   
   
   
@@ -19,7 +21,8 @@ const appRoutes:Routes =[
 @NgModule({
   declarations: [
     AppComponent,
-    ConnectedComponent
+    ConnectedComponent,
+    CallComponent
   ],
   imports: [
     BrowserModule,

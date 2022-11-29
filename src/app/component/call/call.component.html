@@ -1,0 +1,78 @@
+
+
+
+   <nav class="navbar" style="background-color: #e3f2fd;">
+    <div class="container-fluid">
+      <div class="navbar-brand" >
+        CALL
+      </div>  
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarText">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+              <li class="nav-item">
+              <a class="btn nav-link" style="text-align: left;" (click)="okConnec()"><fa-icon [icon]="faHouseSignal" [ngStyle]="{'color':'steelblue'}"></fa-icon>Connect to chat call</a>
+              </li>
+              <li class="nav-item" *ngIf="this.call.isConnected()">
+              <a class="btn nav-link" style="text-align: left;" (click)="okComake()"><fa-icon [icon]="faPhone" [ngStyle]="{'color':'steelblue'}"></fa-icon>Call 1 to 1</a>
+              </li>
+              <li class="nav-item"  *ngIf="this.call.isConnected()">
+              <a class="btn nav-link" style="text-align: left;" (click)="createRoom()"><fa-icon [icon]="faPlus" [ngStyle]="{'color':'greenyellow'}"></fa-icon>Create Room</a>
+              </li>
+              <li class="nav-item" *ngIf="this.call.isConnected()">
+              <a class="btn nav-link" style="text-align: left;" (click)="EntrarRoom()"><fa-icon [icon]="faRightToBracket"></fa-icon>Enter to  Room</a>
+              </li>
+              <li class="nav-item" *ngIf="this.call.isConnected()">
+              <a class="btn nav-link" style="text-align: left;" (click)="ConfigAudio()">Conf Para 6 participantes</a>
+              </li>
+            </ul>
+      </div>
+      </div>
+    </nav>
+    <div id="rid" class="alert alert-success" role="alert" hidden>
+     Id de La Sala Para que se conecten: {{roomId}}
+    </div>
+    <div id="rids" class="alert alert-primary" role="alert" hidden>
+      El Participante <strong>{{this.usr}}</strong> Salio de la Sala.
+    </div>
+  <div class="row row-cols-1 row-cols-md-2 g-4" *ngIf="this.userId !=='' && this.userIdre !==''" >
+    <div class="col">
+      <div class="card">
+        <video  id="remote_video_element_id" autoplay></video>
+        <!-- <img src="..." class="card-img-top" alt="..."> -->
+        <div class="card-body">
+          <h5 class="card-title">Nombre</h5>
+          <p id="part" class="card-text">{{userIdre}}</p>
+        </div>
+      </div>
+    </div>
+  
+    <div class="col">
+      <div class="card">
+        <video  id="local_video_element_id" autoplay muted></video>
+        <!-- <img src="..." class="card-img-top" alt="..."> -->
+        <div class="card-body">
+          <h5 class="card-title">Mi Nombre</h5>
+          <p id="me" class="card-text">{{userId}}</p>
+        </div>
+      </div>
+    </div>
+  
+  </div>
+  
+  <div id="carga" class="row row-cols-1 row-cols-md-2 g-4"  >
+    
+    <div id="usrlocal" class="col" hidden>
+      <div class="card">
+        <video class="card-img-top" id="local_video_element_id_room" autoplay muted></video>
+        <!-- <img src="..." class="card-img-top" alt="..."> -->
+        <div class="card-body">
+          <h5 class="card-title">Mi Nombre</h5>
+          <p id="me" class="card-text">{{userId}}</p>
+          <a class="btn" (click)="SalirdelRoom(this.sala)">Salir De la Sala</a>
+        </div>
+      </div>
+    </div>
+  
+  </div>

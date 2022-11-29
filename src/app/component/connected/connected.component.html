@@ -1,12 +1,12 @@
 <div class="container d-flex justify-content-center">
     <div id="load" class="card mt-5">
-      <div class="d-flex flex-row justify-content-between p-3 adiv text-white">
+      <div class="d-flex flex-row justify-content-between p-3 adiv text-white" style="text-align: center;">
         <!-- <i class="fas fa-chevron-left"></i> -->
-        <fa-icon [icon]="faChevronLeft"></fa-icon>
-        <span class="pb-3" [hidden]="minamesmenu!=='Group Channel'">{{minamesmenu}}<fa-icon class="btn" [icon]="faPlus" (click)="CreateChanel()" [ngStyle]="{'color':'steelblue'}"></fa-icon></span>
-        <span class="pb-3" [hidden]="minamesmenu==='Group Channel'">{{minamesmenu}}</span>
+       <a class="btn" (click)="Disconnect();" title="Disconnect"><fa-icon [icon]="faChevronLeft" [ngStyle]="{'color':'steelblue'}"></fa-icon></a>
+        <span class="pb-3" style="text-align: left;" [hidden]="minamesmenu!=='Group Channel'">{{minamesmenu}}<fa-icon class="btn" [icon]="faPlus" (click)="CreateChanel()" [ngStyle]="{'color':'steelblue'}"></fa-icon></span>
+        <span class="pb-3" style="text-align: left;" [hidden]="minamesmenu==='Group Channel'">{{minamesmenu}}</span>
         <!-- <i class="fas fa-times"></i> -->
-        <fa-icon [icon]="faTimes"></fa-icon>
+        <!-- <fa-icon [icon]="faTimes"></fa-icon> -->
         <div class="alert alert-success" role="alert" id="Res" [hidden]="true">
             {{ startConversationResult }}
           </div>
@@ -78,16 +78,17 @@
             <div class="col-2" *ngIf="message['sender']?.plainProfileUrl && VerMimessages(message.messageId)===false; " style="text-align:left ;">
               <img   [src]="message['sender'].plainProfileUrl" width="30" height="30" style="border-radius: 50%;"> 
              </div>
-            <span class="col-10" id="ous" style="text-align: left;">{{verNick(message)}}: {{message['message']}}</span></div>
+            <span class="col-10" id="ous" style="text-align: left;">{{verNick(message)}}: {{message['message']}}</span><label style="font-size: 80%;">{{verDate(message.createdAt)}}</label></div>
       
         </ng-template>
           <ng-template class="d-flex flex-row p-3" #atom>
             <!-- mr-2 p-3 -->
           <div class="bg-white mr-2 p-3  row"  style="width: auto;height:auto;"><div ></div><span id="us" class="text-muted dot col-10 " style="text-align: right;"  >
-            {{message['message']}}</span>
+            <label style="text-align: right;font-size: 120%;" *ngIf="verReadms(message)===true" ><fa-icon [icon]="faCheckDouble" [ngStyle]="{'color':'purple'}"></fa-icon></label><label style="text-align: right;font-size: 120%;" *ngIf="verReadms(message)===false" ><fa-icon [icon]="faCheck" [ngStyle]="{'color':'rgb(202, 195, 202)'}"></fa-icon></label> {{message['message']}}</span>
             <div class="col-2" *ngIf="message['sender']?.plainProfileUrl && VerMimessages(message.messageId)===true" >
               <img  [src]="message['sender'].plainProfileUrl" width="30" height="30" style="border-radius: 50%;"> 
             </div>
+            <label style="text-align: right;font-size: 80%;" >{{verDate(message.createdAt)}}</label>
             </div>
           </ng-template>
          </div>

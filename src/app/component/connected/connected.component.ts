@@ -1,10 +1,11 @@
 import { Component,Directive,IterableDiffers,OnInit,AfterViewInit } from '@angular/core';
 import { ChatserviceService } from 'src/app/service/chatservice.service';
-import {faChevronLeft,faTimes,faPlus,faXmark,faArrowRight,faArrowLeft,faHeart,faPaperPlane,faWrench} from '@fortawesome/free-solid-svg-icons';
+import {faChevronLeft,faTimes,faPlus,faXmark,faArrowRight,faArrowLeft,faHeart,faPaperPlane,faWrench,faCheck,faCheckDouble} from '@fortawesome/free-solid-svg-icons';
 import { GroupChannel, GroupChannelUpdateParams } from '@sendbird/chat/groupChannel';
 import Swal from 'sweetalert2';
 import { AdminMessage, BaseMessage, FileMessage, MessageType, UserMessage } from '@sendbird/chat/message';
 import { User, UserUpdateParams } from '@sendbird/chat';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-connected',
@@ -21,6 +22,8 @@ export class ConnectedComponent implements OnInit,AfterViewInit {
   faHeart=faHeart;
   faPaperPlane=faPaperPlane;
   faWrench=faWrench;
+  faCheck=faCheck;
+  faCheckDouble=faCheckDouble;
   startConversationResult:string='';
   recived:boolean=false;
 connected:boolean=false;
@@ -46,6 +49,7 @@ group!:GroupChannel;
 profileurl:string='';
 eventos!:Event;
 stop:number=0;
+mens:any='';
   constructor(public chat:ChatserviceService){
 
     this.eventos = new CustomEvent('veomen', { bubbles: true,detail:{Div :()=>{
@@ -102,7 +106,7 @@ LoadScroll(){
 }
   hidentwo(){
   this.hiddenme=true;
-  console.log("ENTREEE");
+  //console.log("ENTREEE");
   this.registerEventHandlers();
   this.getMyConversations();
   this.chat.router.navigate(['Con']);
@@ -192,9 +196,11 @@ LoadScroll(){
     
     }
     }
-  registerEventHandlers() {   
-    this.chat.registerEventHandlers('123',(data:{event:any,data:any})=>{
-      console.log('New event: ' + data.event + data.data);
+  registerEventHandlers() {  
+     
+    this.chat.registerEventHandlers('123',async (data:{event:any,data:any})=>{
+    //  console.log('New event: ' + data.event + JSON.stringify(data.data));
+      
       if (this.selectedChannel) {
         if(data.event ==='onChannelDeleted'){
           console.log("Canal Borrado");
@@ -203,23 +209,49 @@ LoadScroll(){
           //console.log("Mesaje"+ JSON.stringify(this.selectedChannel))
           if (data.data.channel.url == this.selectedChannel.url) {
             this.messages.push(data.data.message);
-            
+          
             this.recived=true; 
           }
         }
+        if(data.event==='onUndeliveredMemberStatusUpdated'){//data.data.members['userId']
+        //  console.log("README "+JSON.stringify(data.data));
+        let canal=  this.chat.sb.groupChannel.getChannel(this.selectedChannel.url);
+         // console.log(" LASTMESSAGE "+JSON.stringify(data.data.lastMessage));
+         (await canal).markAsDelivered().then((ok)=>{console.log("marcado como entregado "+ok)},(err)=>{console.log("No se A entregado")})
+         // for(let ms of this.messages){
+         //  console.log("ES LEIDO "+(await canal).isReadMessage(data.data.lastMessage));
+        // }
+        }
+        if(data.event==='onUnreadMemberStatusUpdated'){
+          let canal=  this.chat.sb.groupChannel.getChannel(this.selectedChannel.url);
+         // console.log(" LASTMESSAGE "+JSON.stringify(data.data));
+         (await canal).markAsRead().then((ok)=>{console.log("marcado como leido "+ok)})
+        }
+        if(data.event==='onMessageUpdated'){
+          let canal=  this.chat.sb.groupChannel.getChannel(data.data.channel.url);
+          (await canal).markAsRead();
+         // console.log('DATA UPDATE MS '+JSON.stringify(data.data));
+        }
         if(data.event==='onUserJoined'){
           this.chat.sendMessage(this.selectedChannel,'El usuario '+data.data.userIds+ ' Se unio al Canal').onSucceeded((e)=>{
-            
                 
-              
               this.getMessages(this.selectedChannel);
               
             });
         }
+       
       }
   
     })
   }
+Disconnect(){
+  this.chat.Disconnect().then((ok)=>{
+    this.chat.router.navigate(['Con']);
+  },(err)=>{
+    console.log("No se Pudo Desconectar");
+  });
+  
+}
   borrarChanel(channel: GroupChannel){
     this.selectedChannel = channel;
     this.chat.Deleting(this.selectedChannel).then((e)=>{      
@@ -261,11 +293,15 @@ LoadScroll(){
   }
 
   getMyConversations() {
-     this.chat.getMyGroupChannels().then((e)=>{
+     this.chat.getMyGroupChannels().then(async (e)=>{
       this.conversations=e;
-      console.log('user');
+      //console.log('user');
       for(let ver of e){
         this.group=ver;
+        const channels = await this.chat.sb.groupChannel.getChannel(ver.url);
+ 
+  await channels.markAsDelivered();
+  await channels.markAsRead();
       }
     });
 }
@@ -280,27 +316,34 @@ updateTextMessage(event: any) {
   this.textMessage = value;
 }
 
-getMessages(channel: GroupChannel) {
+async getMessages(channel: GroupChannel) {
   document.getElementById('scroll')?.addEventListener('veomen',e=>{
-    console.log("EEVVVVe "+e);
+    //console.log("EEVVVVe "+e);
   })
+  
   let okmen:any;
   this.hiden();
   this.selectedChannel = channel;
   
   this.chat.getMessagesFromChannel(
     channel).then((e)=>{
-     console.log("EEE"+ JSON.stringify(e));
+     //console.log("EEE"+ JSON.stringify(e));
      this.messages=e;
       
      for (let ge of e){
-      
-    console.log("SENDER "+JSON.stringify(ge['sender']));
+    
+    //   let vi = 1669313057046;
+    //   let vf=new Date(vi);
+    //   var lero= new DatePipe('en-US');
+    //   var hr = lero.transform(vf, 'MMM d, y, h:mm:ss a');
+    //   console.log("FECHA"+hr);
+    //   console.log("DATA "+ge.createdAt);
+    // console.log("SENDER "+JSON.stringify(ge['sender']));
     
   if(ge.isUserMessage()){
    // console.log(ge['message']);
    if(ge['sender'].nickname===localStorage.getItem('nick') || ge['sender'].userId===localStorage.getItem('userId')){
-    console.log("NICK "+ge['sender'].nickname);
+    //console.log("NICK "+ge['sender'].nickname);
           this.admme.push(ge.messageId);
    }
     
@@ -309,6 +352,21 @@ getMessages(channel: GroupChannel) {
    
   
    
+}
+verDate(vi:number){
+  // let vi = 1669313057046;
+  let vf=new Date(vi);
+  var lero= new DatePipe('en-US');
+  var hr = lero.transform(vf, 'MMM d, y, h:mm:ss a');
+  return hr;
+}
+
+verReadms(ms:BaseMessage){
+if(this.selectedChannel.isReadMessage(ms)){
+  return true;
+}else{
+  return false;
+}
 }
 verNick(ms:BaseMessage){
  let men;
@@ -332,13 +390,16 @@ VerMimessages(veomen:number){
   }
 return false;
 }
-sendMessage() {
-  
+async sendMessage() {
+  //const channels = await this.chat.sb.groupChannel.getChannel(this.selectedChannel.url);
+ 
+ // await channels.markAsDelivered();
+ this.selectedChannel.markAsDelivered().then((ok)=>{console.log('Entregado')},(err)=>{ console.log('No Entregado')})
   let txtarea=document.getElementsByTagName('textarea');
   txtarea[0].value='';
   this.chat.sendMessage(this.selectedChannel,this.textMessage).onSucceeded((e)=>{
   e.messageId
-      
+      //this.selectedChannel.markAsRead();
     
     this.getMessages(this.selectedChannel);
     

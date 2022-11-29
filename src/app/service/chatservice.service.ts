@@ -3,7 +3,7 @@ import { ConnectableObservable, filter, Observable, of } from 'rxjs';
 import SendbirdChat,{SendbirdChatParams,SendbirdError,BaseChannel, User, ConnectionHandler, ChannelType, MetaData,UserUpdateParams} from '@sendbird/chat'
 import { GroupChannelHandler,GroupChannelListOrder,GroupChannelCountParams,GroupChannelModule,GroupChannel,GroupChannelCreateParams,GroupChannelListQueryParams,GroupChannelListQuery, MyMemberStateFilter } from '@sendbird/chat/groupChannel';
 import { OpenChannelModule, SendbirdOpenChat,OpenChannel} from '@sendbird/chat/openChannel';
-import {BaseMessage,PreviousMessageListQueryParams,PreviousMessageListQuery, MessageTypeFilter, ReplyType, MessageRequestHandler, MessageModule, UserMessageCreateParams,} from '@sendbird/chat/message';
+import {PushNotificationDeliveryOption,BaseMessage,PreviousMessageListQueryParams,PreviousMessageListQuery, MessageTypeFilter, ReplyType, MessageRequestHandler, MessageModule, UserMessageCreateParams,} from '@sendbird/chat/message';
 import { GroupChannelHandlerParams } from '@sendbird/chat/lib/__definition';
 import {RouterModule, Routes,Router} from '@angular/router';
 
@@ -14,8 +14,8 @@ export class ChatserviceService {
 
   
   // https://dashboard.sendbird.com
-   APP_ID = 'Your App Id';
-   token='Your Token';
+   APP_ID = '3287143B-4F04-46D6-9A71-C2A36E0FAF02';
+   token='12fcfdfe87746e0efb9427d2940a949ac3cd485e';
   sb=  SendbirdChat.init(
     {
     appId: this.APP_ID,
@@ -48,7 +48,9 @@ connect(userId: string, token: any,nick:string):Promise<User>{
   isConnected() {
     return this.sb && this.sb.currentUser && this.sb.currentUser.userId;
   }
-
+ Disconnect():Promise<void> {
+  return this.sb.disconnect();
+ }
   getConnectedUser() {
     return this.sb && this.sb.currentUser ? this.sb.currentUser : null;
   }
@@ -58,7 +60,7 @@ connect(userId: string, token: any,nick:string):Promise<User>{
     
     const groupChannelHandler: GroupChannelHandler = new GroupChannelHandler({
       onMessageReceived: (channel: BaseChannel, message: BaseMessage)=> { 
-        
+      
          callback({
           event: 'onMessageReceived',
           data: {
@@ -69,7 +71,16 @@ connect(userId: string, token: any,nick:string):Promise<User>{
       
         
       },
-      onMessageUpdated: (channel: BaseChannel, message: BaseMessage) => {},
+      onMessageUpdated: (channel: BaseChannel, message: BaseMessage) => {
+        callback({
+          event: 'onMessageUpdated',
+          data: {
+            channel,
+            message,
+          },
+        })
+
+      },
       onMessageDeleted: (channel: BaseChannel, messageId: number) => {},
       onChannelChanged: (channel: BaseChannel) => {},
       onChannelDeleted: (channelUrl: string, channelType: ChannelType) => {},
@@ -91,8 +102,28 @@ connect(userId: string, token: any,nick:string):Promise<User>{
         })
       },
       onUserLeft: (channel: GroupChannel, user: User) => {},
-      onUndeliveredMemberStatusUpdated: (channel: GroupChannel) => { },
-      onUnreadMemberStatusUpdated: (channel: GroupChannel) => {},
+      onUndeliveredMemberStatusUpdated: (channel: GroupChannel) => {
+      // channel.markAsDelivered().then((ok)=>{})
+     // console.log("DENTRO LASTMESSAGE"+JSON.stringify(channel.lastMessage['message']));
+        callback({
+          event: 'onUndeliveredMemberStatusUpdated',
+          
+          data: {
+            channel,
+          },
+        })
+
+      },
+      onUnreadMemberStatusUpdated: (channel: GroupChannel) => { 
+        //console.log("DENTRO MEMBERS LASTMESSAGE"+JSON.stringify(channel.lastMessage['message']));
+        callback({
+          event: 'onUnreadMemberStatusUpdated',
+          
+          data: {
+            channel,
+          },
+        })
+      },
       onTypingStatusUpdated: (channel: GroupChannel) => {},
       onUserMuted: (channel: BaseChannel, user: User) => {},
       onUserUnmuted: (channel: BaseChannel, user: User) => {},
@@ -101,12 +132,9 @@ connect(userId: string, token: any,nick:string):Promise<User>{
       onChannelMemberCountChanged: () => {},
       onOperatorUpdated(channel, users) {   },
       onMentionReceived(channel, message) {   },
-      
-      
-      
-    });
-    // Add this channel event handler to the `SendBird` instance.
     
+    // Add this channel event handler to the `SendBird` instance.
+    });
    this.sb.groupChannel.addGroupChannelHandler(UNIQUE_HANDLER_ID, groupChannelHandler);
 
   
@@ -183,7 +211,7 @@ return channelName.updateChannel(paramst);
       reverse: false,
       messageTypeFilter: MessageTypeFilter.ALL,
       replyType: ReplyType.NONE,
-      includeThreadInfo: false,
+      includeThreadInfo: true,
       includeParentMessageInfo: false,
       includeMetaArray:true,
       
@@ -199,7 +227,7 @@ return channelName.updateChannel(paramst);
     
     let pmen:UserMessageCreateParams={
       mentionedUserIds:[localStorage.getItem('userId')!],
-     
+    pushNotificationDeliveryOption:PushNotificationDeliveryOption.DEFAULT,
       message:message
     };
     
