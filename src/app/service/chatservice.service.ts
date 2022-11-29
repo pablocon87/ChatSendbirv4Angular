@@ -14,8 +14,8 @@ export class ChatserviceService {
 
   
   // https://dashboard.sendbird.com
-   APP_ID = '3287143B-4F04-46D6-9A71-C2A36E0FAF02';
-   token='12fcfdfe87746e0efb9427d2940a949ac3cd485e';
+   APP_ID = 'Your App Id';
+   token='Your Token';
   sb=  SendbirdChat.init(
     {
     appId: this.APP_ID,
