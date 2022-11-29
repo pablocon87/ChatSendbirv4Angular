@@ -19,7 +19,7 @@ npm i bootstrap
 ##
 npm i @popperjs/core
 ##
-##Para SendbirdCall se Necesita instalar lo siguiente:
+## Para SendbirdCall se Necesita instalar lo siguiente:
 ##
 npm install sendbird-calls
 ##
@@ -30,7 +30,7 @@ Abrir el archivo "SendBirdCall.min.d.ts" que esta  node_modules/sendbird-calls
 ##
 y editan la siguiente Linea
 ##
-(...args: ArgsType<T>): void;  --(la remplazan por)-->  (...args: ArgsType<T>[]): void;
+## `(...args: ArgsType<T>): void`  --la remplazan por-->  `(...args: ArgsType<T>[]): void`
 ## 
  
 ## 4- El proyecto es totalmente publico y sin fines de lucro, solo con fines educativos.
