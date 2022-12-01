@@ -64,9 +64,9 @@ this.call=true;
       return;
     }
     if (this.form.get('nick')!.value.toString() ===''){
-      document.getElementById('user')?.focus();
-      document.getElementById('user')!.style.backgroundColor='red';
-      document.getElementById('user')!.ariaPlaceholder='Coloque nickname(ejemplo: "Pepe")'
+      document.getElementById('nick')?.focus();
+      document.getElementById('nick')!.style.backgroundColor='red';
+      document.getElementById('nick')!.ariaPlaceholder='Coloque nickname(ejemplo: "Pepe")'
       return;
     }
     
